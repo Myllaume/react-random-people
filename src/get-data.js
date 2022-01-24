@@ -8,7 +8,8 @@ export default function () {
                     first_name: faker.name.firstName(),
                     last_name: faker.name.lastName(),
                     title: faker.name.title(),
-                    email: faker.internet.email()
+                    email: faker.internet.email(),
+                    id: i
                 })
             }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import data from '../get-data'
 import People from './people'
+import Search from './search'
 
 export default class App extends React.Component {
     state = {
@@ -18,7 +19,7 @@ export default class App extends React.Component {
 
     render () {
         if (this.state.externalData === null) {
-            return <p>Données pas encore chargées</p>
+            return <p>Chargement en cours</p>
         }
 
         const Peoples = this.state.externalData.map((people) => {
@@ -27,11 +28,13 @@ export default class App extends React.Component {
                 last_name={people.last_name}
                 title={people.title}
                 email={people.email}
+                id={people.id}
             />
         })
 
         return (
             <div>
+                <Search value='toto' />
                { Peoples }
             </div>
         );
