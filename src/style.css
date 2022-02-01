@@ -9,7 +9,7 @@ main {
     margin-top: 50px;
 }
 
-#search {
+.search {
     border: unset;
     width: 100%;
     font-size: 50px;
@@ -28,4 +28,21 @@ input:focus {
     border-radius: 5px;
     padding: 10px;
     margin: 20px auto;
+}
+
+button {
+    cursor: pointer;
+    border: unset;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+button.delete {
+    color: white;
+    background-color: rgb(161, 65, 65);
+}
+
+button.update {
+    color: white;
+    background-color: rgb(79, 163, 114);
 }
