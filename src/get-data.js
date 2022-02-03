@@ -1,6 +1,6 @@
 export default function () {
     return import('@faker-js/faker')
-        .then((faker) => {
+        .then(({ faker }) => {
             const database = [];
 
             for (let i = 0; i < 100; i++) {
@@ -15,5 +15,5 @@ export default function () {
 
             return database;
         })
-        .catch((error) => 'An error occurred while loading the component');
+        .catch((error) => 'An error occurred while loading @faker-js/faker component');
 }
