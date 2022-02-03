@@ -4,8 +4,19 @@ import Modal from './modal'
 export default class People extends React.Component {
     state = {
         editing: false,
-        visible: true,
+        isVisible: true,
         visibleTools: false
+    }
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        console.log(this.props.isVisible);
+        this.setState({
+            isVisible: this.props.isVisible
+        });
     }
 
     onMouseEnter (event) {
@@ -22,7 +33,7 @@ export default class People extends React.Component {
 
     onClickDelete (event) {
         this.setState({
-            visible: false
+            isVisible: false
         });
     }
 
@@ -36,7 +47,7 @@ export default class People extends React.Component {
 
         const { id, first_name, last_name, title, email } = this.props;
 
-        if (this.state.visible === false) {
+        if (this.state.isVisible === false) {
             return <div></div>;
         }
 
@@ -57,12 +68,18 @@ export default class People extends React.Component {
                     <p>{ email }</p>
                 </div>
 
-                <div className='column is-narrow buttons'>
+                <div
+                    className='column is-narrow buttons'
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column'
+                    }}
+                >
                     <button
                         className={`button is-small is-primary ${(this.state.visibleTools ? null : 'is-invisible')}`}
                         onClick={(event) => this.onClickUpdate(event)}
                     >
-                        <span><i class="fas fa-check is-small"></i></span>
+                        <span><i className="fas fa-check is-small"></i></span>
                         <span>Modifier</span>
                     </button>
 
@@ -70,7 +87,7 @@ export default class People extends React.Component {
                         className={`button is-small is-danger ${(this.state.visibleTools ? null : 'is-invisible')}`}
                         onClick={(event) => this.onClickDelete(event)}
                     >
-                        <span><i class="fas fa-times is-small"></i></span>
+                        <span><i className="fas fa-times is-small"></i></span>
                         <span>Supprimer</span>
                     </button>
                 </div>

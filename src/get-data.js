@@ -9,7 +9,9 @@ export default function () {
                     last_name: faker.name.lastName(),
                     title: faker.name.title(),
                     email: faker.internet.email(),
-                    id: i
+
+                    id: i,
+                    isVisible: true
                 })
             }
 

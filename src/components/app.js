@@ -6,16 +6,15 @@ import Search from './search'
 
 export default class App extends React.Component {
     state = {
-        externalData: null,
-        searchData: null,
+        data: null,
         searchString: ''
     };
 
     componentDidMount() {
         this._asyncRequest = data().then(
-            externalData => {
+            data => {
                 this._asyncRequest = null;
-                this.setState({ externalData });
+                this.setState({ data });
             }
         )
     }
@@ -29,12 +28,15 @@ export default class App extends React.Component {
 
         if (value === '') {
             this.setState({
-                searchData: null
+                data: this.state.data.map((item) => {
+                    item.isVisible = true;
+                    return item;
+                })
             });
             return;
         }
 
-        const fuse = new Fuse(this.state.externalData, {
+        const fuse = new Fuse(this.state.data, {
             includeScore: true,
             shouldSort: true,
             keys: ['first_name', 'last_name']
@@ -45,14 +47,21 @@ export default class App extends React.Component {
             .map(value => value.item.id)
 
         this.setState({
-            searchData: this.state.externalData.filter(item => resultIds.includes(item.id))
+            data: this.state.data
+                .map((item) => {
+                    if (resultIds.includes(item.id) === false) {
+                        item.isVisible = false;
+                    } else {
+                        item.isVisible = true;
+                    }
+                    return item;
+                })
         });
     }
 
     render () {
-        const data = this.state.searchData || this.state.externalData;
 
-        if (data === null) {
+        if (this.state.data === null) {
             return <p>Chargement en cours</p>
         }
 
@@ -84,15 +93,18 @@ export default class App extends React.Component {
                     }}
                 >
                     {
-                        data.map(({ id, first_name, last_name, title, email }) => (
-                            <People
-                                first_name={first_name}
-                                last_name={last_name}
-                                title={title}
-                                email={email}
-                                key={id}
-                            />
-                        ))
+                        this.state.data
+                            .filter(item => item.isVisible === true)
+                            .map(({ id, first_name, last_name, title, email, isVisible }) => (
+                                <People
+                                    first_name={first_name}
+                                    last_name={last_name}
+                                    title={title}
+                                    email={email}
+                                    key={id}
+                                    isVisible={isVisible}
+                                />
+                            ))
                     }
                 </div>
             </div>
