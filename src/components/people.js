@@ -1,8 +1,9 @@
 import React from 'react';
+import Modal from './modal'
 
 export default class People extends React.Component {
     state = {
-        edited: false,
+        editing: false,
         visible: true,
         visibleTools: false
     }
@@ -26,7 +27,9 @@ export default class People extends React.Component {
     }
 
     onClickUpdate () {
-        console.log(this.props);
+        this.setState({
+            editing: true
+        });
     }
 
     render () {
@@ -39,21 +42,47 @@ export default class People extends React.Component {
 
         return (
             <div
-                className='people'
+                className='box columns'
+                style={{
+                    maxWidth: '500px',
+                    margin: '20px auto'
+                }}
                 onMouseEnter={(event) => this.onMouseEnter(event)}
                 onMouseLeave={(event) => this.onMouseLeave(event)}
             >
-                <h3>{ first_name } { last_name }</h3>
-                <p>{ title }</p>
-                <p>{ email }</p>
+
+                <div className='column'>
+                    <h3 className='title is-5'>{ first_name } { last_name }</h3>
+                    <p>{ title }</p>
+                    <p>{ email }</p>
+                </div>
+
+                <div className='column is-narrow buttons'>
+                    <button
+                        className={`button is-small is-primary ${(this.state.visibleTools ? null : 'is-invisible')}`}
+                        onClick={(event) => this.onClickUpdate(event)}
+                    >
+                        <span><i class="fas fa-check is-small"></i></span>
+                        <span>Modifier</span>
+                    </button>
+
+                    <button
+                        className={`button is-small is-danger ${(this.state.visibleTools ? null : 'is-invisible')}`}
+                        onClick={(event) => this.onClickDelete(event)}
+                    >
+                        <span><i class="fas fa-times is-small"></i></span>
+                        <span>Supprimer</span>
+                    </button>
+                </div>
+                
                 {
-                    (this.state.visibleTools ?
-                        <div>
-                            <button className='update' onClick={(event) => this.onClickUpdate(event)}>Éditer</button>
-                            <button className='delete' onClick={(event) => this.onClickDelete(event)}>Supprimer</button>
-                        </div>
-                        : null)
-                }
+                (this.state.editing ?
+                    <Modal isOpen={this.state.editing} />
+                    :
+                    null
+                )
+            }
+
             </div>
         );
     }

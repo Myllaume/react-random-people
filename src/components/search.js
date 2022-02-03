@@ -4,7 +4,7 @@ export default function ({ value, onChange }) {
     return (
         <input
             onChange={onChange}
-            className='search'
+            className='input is-large'
             type="search"
             value={value}
         />

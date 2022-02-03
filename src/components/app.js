@@ -58,21 +58,43 @@ export default class App extends React.Component {
 
         return (
             <div>
-                <Search
-                    value={this.state.searchString}
-                    onChange={(event) => this.onChange(event)}
-                />
-                {
-                    data.map(({ id, first_name, last_name, title, email }) => (
-                        <People
-                            first_name={first_name}
-                            last_name={last_name}
-                            title={title}
-                            email={email}
-                            key={id}
+                <div 
+                    className="field"
+                    style={{
+                        position: 'fixed',
+                        top: '0px',
+                        left: '0px',
+                        width: '100%'
+                    }}
+                >
+                    <p className="control has-icons-left">
+                    <span className="icon is-large is-left">
+                        <i className="fas fa-search"></i>
+                    </span> 
+                        <Search
+                            value={this.state.searchString}
+                            onChange={(event) => this.onChange(event)}
                         />
-                    ))
-                }
+                    </p>
+                </div>
+
+                <div
+                    style={{
+                        paddingTop: '100px'
+                    }}
+                >
+                    {
+                        data.map(({ id, first_name, last_name, title, email }) => (
+                            <People
+                                first_name={first_name}
+                                last_name={last_name}
+                                title={title}
+                                email={email}
+                                key={id}
+                            />
+                        ))
+                    }
+                </div>
             </div>
         );
     }
