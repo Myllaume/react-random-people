@@ -1,13 +1,18 @@
 import React from 'react';
 import Fuse from 'fuse.js';
-import data from '../get-data'
-import People from './people'
-import Search from './search'
+import data from '../get-data';
+import People from './people';
+import Search from './search';
+import Modal from './modal';
 
 export default class App extends React.Component {
     state = {
         data: null,
-        searchString: ''
+        searchString: '',
+        modal: {
+            isOpen: false,
+            itemId: undefined
+        }
     };
 
     componentDidMount() {
@@ -59,6 +64,54 @@ export default class App extends React.Component {
         });
     }
 
+    onClickDelete (id) {
+        this.setState({
+            data: this.state.data
+                .filter(item => item.id !== id)
+        });
+    }
+
+    onClickOpenModal (id) {
+        this.setState({
+            modal: {
+                isOpen: true,
+                itemId: id
+            }
+        });
+    }
+
+    onClickCloseModal () {
+        this.setState({
+            modal: {
+                isOpen: false,
+                itemId: undefined
+            }
+        });
+    }
+
+    onSubmitSaveModal (event, itemEdited) {
+        event.preventDefault();
+
+        for (const meta in itemEdited) {
+            const value = itemEdited[meta]
+            if (value === '') {
+                return;
+            }
+        }
+
+        this.setState({
+            data: this.state.data
+                .map((item) => {
+                    if (item.id === itemEdited.id) {
+                        item = itemEdited;
+                    }
+                    return item;
+                })
+        });
+
+        this.onClickCloseModal();
+    }
+
     render () {
 
         if (this.state.data === null) {
@@ -101,12 +154,29 @@ export default class App extends React.Component {
                                     last_name={last_name}
                                     title={title}
                                     email={email}
+                                    id={id}
                                     key={id}
                                     isVisible={isVisible}
+
+                                    onClickDelete={this.onClickDelete.bind(this)}
+                                    onClickOpenModal={this.onClickOpenModal.bind(this)}
                                 />
                             ))
                     }
                 </div>
+
+                {
+                    (this.state.modal.isOpen ?
+                        <Modal
+                            item={this.state.data.find(item => item.id === this.state.modal.itemId)}
+
+                            onClickCloseModal={this.onClickCloseModal.bind(this)}
+                            onSubmitSaveModal={this.onSubmitSaveModal.bind(this)}
+                        />
+                        :
+                        null
+                    )
+                }
             </div>
         );
     }

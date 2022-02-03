@@ -1,5 +1,4 @@
 import React from 'react';
-import Modal from './modal'
 
 export default class People extends React.Component {
     state = {
@@ -13,7 +12,6 @@ export default class People extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.isVisible);
         this.setState({
             isVisible: this.props.isVisible
         });
@@ -31,21 +29,9 @@ export default class People extends React.Component {
         });
     }
 
-    onClickDelete (event) {
-        this.setState({
-            isVisible: false
-        });
-    }
-
-    onClickUpdate () {
-        this.setState({
-            editing: true
-        });
-    }
-
     render () {
 
-        const { id, first_name, last_name, title, email } = this.props;
+        const { first_name, last_name, title, email } = this.props;
 
         if (this.state.isVisible === false) {
             return <div></div>;
@@ -77,7 +63,7 @@ export default class People extends React.Component {
                 >
                     <button
                         className={`button is-small is-primary ${(this.state.visibleTools ? null : 'is-invisible')}`}
-                        onClick={(event) => this.onClickUpdate(event)}
+                        onClick={() => this.props.onClickOpenModal(this.props.id)}
                     >
                         <span><i className="fas fa-check is-small"></i></span>
                         <span>Modifier</span>
@@ -85,21 +71,12 @@ export default class People extends React.Component {
 
                     <button
                         className={`button is-small is-danger ${(this.state.visibleTools ? null : 'is-invisible')}`}
-                        onClick={(event) => this.onClickDelete(event)}
+                        onClick={() => this.props.onClickDelete(this.props.id)}
                     >
                         <span><i className="fas fa-times is-small"></i></span>
                         <span>Supprimer</span>
                     </button>
                 </div>
-                
-                {
-                (this.state.editing ?
-                    <Modal isOpen={this.state.editing} />
-                    :
-                    null
-                )
-            }
-
             </div>
         );
     }

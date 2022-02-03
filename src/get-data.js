@@ -3,7 +3,7 @@ export default function () {
         .then(({ faker }) => {
             const database = [];
 
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 10; i++) {
                 database.push({
                     first_name: faker.name.firstName(),
                     last_name: faker.name.lastName(),
